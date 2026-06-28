@@ -210,14 +210,14 @@ function App() {
                         </defs>
                       </svg>
 
-                      <div style={{ position: 'absolute', top: '42%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', textTransform: 'uppercase' }}>
+                      <div style={{ position: 'absolute', top: '32%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                           Misurata {zone.tempActual}°C
                         </div>
-                        <div style={{ fontSize: '0.75rem', color: '#06b6d4', fontWeight: '500', marginTop: '0.1rem' }}>
+                        <div style={{ fontSize: '0.72rem', color: '#06b6d4', fontWeight: '600', marginTop: '0.1rem' }}>
                           Umidità: {zone.humidity}%
                         </div>
-                        <div style={{ fontSize: '2.5rem', fontWeight: '800', fontFamily: 'var(--font-title)', margin: '0.1rem 0', color: zone.power ? 'white' : 'var(--color-text-muted)' }}>
+                        <div style={{ fontSize: '2.1rem', fontWeight: '800', fontFamily: 'var(--font-title)', margin: '0.05rem 0', color: zone.power ? 'white' : 'var(--color-text-muted)' }}>
                           {zone.power ? `${zone.tempTarget}°C` : 'OFF'}
                         </div>
                         <div style={{ display: 'flex', gap: '1rem', marginTop: '0.2rem' }}>

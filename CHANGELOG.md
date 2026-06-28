@@ -5,6 +5,12 @@ Il formato è basato su [Keep a Changelog](https://keepachangelog.com/it/1.0.0/)
 
 ---
 
+## [1.0.2] - 2026-06-28
+### Corretto
+- Centrato e ridimensionato il display centrale dei termostati per evitare sovrapposizioni e allineare perfettamente il valore di temperatura misurata, l'umidità e lo stato OFF/Temperatura target all'interno dell'arco SVG.
+
+---
+
 ## [1.0.1] - 2026-06-28
 ### Aggiunto
 - Generata e integrata l'icona applicazione desktop nativa macOS (`icon.icns` in formato 3D con design goccia d'acqua e fulmine per Clima ed Energia).
