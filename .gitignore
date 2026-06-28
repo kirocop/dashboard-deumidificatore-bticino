@@ -1,0 +1,20 @@
+# Dipendenze
+node_modules/
+
+# Build di produzione e installer compilati
+dist/
+dist-mac/
+
+# Chiavi e credenziali private di connessione locali/cloud
+.env
+.env.production
+.env.local
+
+# File di configurazione di sistema macOS
+.DS_Store
+
+# Log di errore di Node/npm
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
