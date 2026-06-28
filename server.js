@@ -16,10 +16,10 @@ app.use(express.json());
 const DASHBOARD_TITLE = process.env.DASHBOARD_TITLE || 'La Mia Casa Smart';
 const DASHBOARD_DESCRIPTION = process.env.DASHBOARD_DESCRIPTION || 'Domotica Integrata & Consumi';
 
-const GATEWAY_IP = process.env.BTICINO_IP || '192.168.1.45';
+const GATEWAY_IP = process.env.BTICINO_IP || '';
 const GATEWAY_PORT = parseInt(process.env.BTICINO_PORT || '20000', 10);
 const OWN_PASSWORD = process.env.BTICINO_PASSWORD || '12345';
-const LEGRAND_IP = process.env.LEGRAND_IP || '192.168.1.44';
+const LEGRAND_IP = process.env.LEGRAND_IP || '';
 
 // Parsing delle zone impostate dall'utente in .env
 const rawZones = process.env.HOUSE_ZONES || 'Soggiorno,Camera da letto,Cameretta';
@@ -134,9 +134,11 @@ function ownCalcPass(password, nonce) {
   return result;
 }
 
-// Invia comando OpenWebNet
 function sendOpenWebNetCommand(command) {
   return new Promise((resolve, reject) => {
+    if (!GATEWAY_IP) {
+      return reject(new Error('Gateway Bticino IP non configurato nel file .env'));
+    }
     const client = new net.Socket();
     let responseData = '';
     let authenticated = false;

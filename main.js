@@ -22,7 +22,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 850,
-    title: 'Casa Barbato',
+    title: 'Dashboard Deumidificatore Bticino',
     autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: false,
