@@ -7,6 +7,10 @@ function App() {
   const [activeTab, setActiveTab] = useState('domotica'); // 'domotica' | 'energia'
   const [expandedZoneId, setExpandedZoneId] = useState(null); // ID della zona ingrandita
   
+  const CURRENT_VERSION = '1.0.5';
+  const [updateAvailable, setUpdateAvailable] = useState(false);
+  const [latestVersion, setLatestVersion] = useState('');
+
   // Stati per pannelli collassabili
   const [scenariosCollapsed, setScenariosCollapsed] = useState(true);
   const [plugsCollapsed, setPlugsCollapsed] = useState(true);
@@ -27,8 +31,38 @@ function App() {
     }
   };
 
+  const checkUpdates = async () => {
+    try {
+      const res = await fetch('https://api.github.com/repos/kirocop/dashboard-deumidificatore-bticino/releases/latest');
+      if (res.ok) {
+        const json = await res.json();
+        const tag = json.tag_name; // es: v1.0.6
+        const cleanTag = tag.replace('v', '');
+        
+        // Verifica se la versione rilasciata è maggiore della corrente
+        if (cleanTag !== CURRENT_VERSION) {
+          const currentParts = CURRENT_VERSION.split('.').map(Number);
+          const latestParts = cleanTag.split('.').map(Number);
+          
+          for (let i = 0; i < 3; i++) {
+            if (latestParts[i] > currentParts[i]) {
+              setUpdateAvailable(true);
+              setLatestVersion(tag);
+              break;
+            } else if (latestParts[i] < currentParts[i]) {
+              break;
+            }
+          }
+        }
+      }
+    } catch (err) {
+      console.log('Controllo aggiornamenti fallito:', err);
+    }
+  };
+
   useEffect(() => {
     fetchStatus();
+    checkUpdates();
     const interval = setInterval(fetchStatus, 4000);
     return () => clearInterval(interval);
   }, []);
@@ -123,6 +157,26 @@ function App() {
 
   return (
     <div className="dashboard-container">
+      {/* Banner per Aggiornamenti Disponibili */}
+      {updateAvailable && (
+        <div style={{ background: 'linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%)', color: '#0f172a', padding: '0.8rem 1.5rem', borderRadius: '16px', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: '700', fontSize: '0.9rem', boxShadow: '0 4px 20px rgba(245, 158, 11, 0.25)', animation: 'slideDown 0.3s ease-out' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+            <span>🚀</span>
+            <span>Nuovo aggiornamento disponibile ({latestVersion})!</span>
+          </div>
+          <a 
+            href="https://github.com/kirocop/dashboard-deumidificatore-bticino/releases/latest" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{ background: '#0f172a', color: 'white', padding: '0.4rem 1rem', borderRadius: '10px', textDecoration: 'none', fontSize: '0.8rem', transition: 'transform 0.15s' }}
+            onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+            onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+          >
+            Scarica Ora
+          </a>
+        </div>
+      )}
+
       {/* Header */}
       <header className="header">
         <div>
