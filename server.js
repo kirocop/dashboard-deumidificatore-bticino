@@ -143,25 +143,37 @@ function sendOpenWebNetCommand(command) {
     const client = new net.Socket();
     let responseData = '';
     let authenticated = false;
+    let handshakeInitiated = false;
     client.setTimeout(4000);
     client.connect(GATEWAY_PORT, GATEWAY_IP, () => {
       client.write('*99*0##');
     });
     client.on('data', (data) => {
       const msg = data.toString().trim();
-      if (msg === '*#*1##' && !authenticated) return;
+      
+      // Se il gateway risponde direttamente con ACK *#*1##, siamo connessi senza bisogno di auth
+      if (msg === '*#*1##' && !handshakeInitiated) {
+        authenticated = true;
+        handshakeInitiated = true;
+        client.write(command);
+        return;
+      }
+      
       if (msg === '*#*1##' && authenticated) {
         client.write(command);
         return;
       }
+      
       const challengeMatch = msg.match(/\*#(\d+)##/);
       if (challengeMatch && !authenticated) {
         const nonce = challengeMatch[1];
         const calculatedPass = ownCalcPass(OWN_PASSWORD, nonce);
         authenticated = true;
+        handshakeInitiated = true;
         client.write(`*#${calculatedPass}##`);
         return;
       }
+      
       responseData += msg;
       if (msg.endsWith('*#*1##') || msg.endsWith('*#*0##')) {
         client.destroy();
