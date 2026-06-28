@@ -6,6 +6,22 @@ L'applicazione è sviluppata in **React + Vite** per il frontend ed **Electron**
 
 ---
 
+## 🍏 Come installare l'App su macOS (DMG)
+
+Dato che l'applicazione è open-source ed è distribuita gratuitamente al di fuori dell'Apple App Store, macOS potrebbe bloccare il primo avvio mostrando l'avviso *"Dashboard Deumidificatore Bticino è danneggiato e non può essere aperto"*. Si tratta di una misura di sicurezza standard (Gatekeeper) per le applicazioni non firmate digitalmente.
+
+Segui questi passaggi per installare e sbloccare l'applicazione in pochi secondi:
+
+1. **Scarica l'installer DMG** dall'area [Releases](https://github.com/kirocop/dashboard-deumidificatore-bticino/releases) dell'applicazione.
+2. Apri il file `.dmg` scaricato e **trascina** l'applicazione `Dashboard Deumidificatore Bticino` dentro la tua cartella **Applicazioni** (Applications).
+3. Apri il **Terminale** del tuo Mac ed esegui questo comando premendo Invio:
+   ```bash
+   xattr -cr "/Applications/Dashboard Deumidificatore Bticino.app"
+   ```
+4. Apri l'applicazione facendo doppio click. Ora si avvierà all'istante senza mostrare alcun errore!
+
+---
+
 ## ✨ Funzionalità principali
 
 1. **Gestione Climatizzazione multizona:**
