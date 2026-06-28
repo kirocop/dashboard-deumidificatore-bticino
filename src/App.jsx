@@ -181,64 +181,72 @@ function App() {
                       </div>
                     </div>
 
-                    {/* Regolazione termostato circolare */}
-                    <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: '1.5rem 0', height: '200px' }}>
-                      <svg viewBox="0 0 200 120" style={{ width: '100%', maxWidth: '240px', height: 'auto', overflow: 'visible' }}>
-                        <path 
-                          d="M 20 110 A 80 80 0 0 1 180 110" 
-                          fill="none" 
-                          stroke={zone.power ? 'rgba(6, 182, 212, 0.15)' : 'rgba(255,255,255,0.03)'} 
-                          strokeWidth="12" 
-                          strokeLinecap="round" 
-                        />
-                        {zone.power && (
+                    {/* Regolazione termostato ad arco e pulsanti laterali ben spaziati */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', margin: '1rem 0 1.5rem 0', minHeight: '190px', position: 'relative' }}>
+                      
+                      {/* Pulsante MENO a sinistra */}
+                      <button 
+                        className="temp-btn" 
+                        onClick={() => handleTempChange(id, -0.5)}
+                        disabled={!zone.power}
+                        style={{ width: '42px', height: '42px', fontSize: '1.2rem', opacity: zone.power ? 1 : 0.15, flexShrink: 0, zIndex: 10, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+                      >
+                        －
+                      </button>
+
+                      {/* Display Arco centrale con scritte ben distanziate */}
+                      <div style={{ position: 'relative', width: '100%', maxWidth: '180px', height: '140px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <svg viewBox="0 0 200 120" style={{ width: '100%', height: 'auto', overflow: 'visible', position: 'absolute', top: 0, left: 0 }}>
                           <path 
                             d="M 20 110 A 80 80 0 0 1 180 110" 
                             fill="none" 
-                            stroke="url(#arc-gradient)" 
-                            strokeWidth="12" 
+                            stroke={zone.power ? 'rgba(6, 182, 212, 0.12)' : 'rgba(255,255,255,0.03)'} 
+                            strokeWidth="10" 
                             strokeLinecap="round" 
-                            strokeDasharray="251" 
-                            strokeDashoffset={251 - (251 * ((zone.tempTarget - 16) / 16))} 
                           />
-                        )}
-                        <defs>
-                          <linearGradient id="arc-gradient" x1="0" y1="0" x2="1" y2="0">
-                            <stop offset="0%" stopColor="#06b6d4" />
-                            <stop offset="100%" stopColor="#3b82f6" />
-                          </linearGradient>
-                        </defs>
-                      </svg>
+                          {zone.power && (
+                            <path 
+                              d="M 20 110 A 80 80 0 0 1 180 110" 
+                              fill="none" 
+                              stroke="url(#arc-gradient)" 
+                              strokeWidth="10" 
+                              strokeLinecap="round" 
+                              strokeDasharray="251" 
+                              strokeDashoffset={251 - (251 * ((zone.tempTarget - 16) / 16))} 
+                            />
+                          )}
+                          <defs>
+                            <linearGradient id="arc-gradient" x1="0" y1="0" x2="1" y2="0">
+                              <stop offset="0%" stopColor="#06b6d4" />
+                              <stop offset="100%" stopColor="#3b82f6" />
+                            </linearGradient>
+                          </defs>
+                        </svg>
 
-                      <div style={{ position: 'absolute', top: '32%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                          Misurata {zone.tempActual}°C
-                        </div>
-                        <div style={{ fontSize: '0.72rem', color: '#06b6d4', fontWeight: '600', marginTop: '0.1rem' }}>
-                          Umidità: {zone.humidity}%
-                        </div>
-                        <div style={{ fontSize: '2.1rem', fontWeight: '800', fontFamily: 'var(--font-title)', margin: '0.05rem 0', color: zone.power ? 'white' : 'var(--color-text-muted)' }}>
-                          {zone.power ? `${zone.tempTarget}°C` : 'OFF'}
-                        </div>
-                        <div style={{ display: 'flex', gap: '1rem', marginTop: '0.2rem' }}>
-                          <button 
-                            className="temp-btn" 
-                            onClick={() => handleTempChange(id, -0.5)}
-                            disabled={!zone.power}
-                            style={{ width: '36px', height: '36px', fontSize: '1rem', opacity: zone.power ? 1 : 0.2 }}
-                          >
-                            －
-                          </button>
-                          <button 
-                            className="temp-btn" 
-                            onClick={() => handleTempChange(id, 0.5)}
-                            disabled={!zone.power}
-                            style={{ width: '36px', height: '36px', fontSize: '1rem', opacity: zone.power ? 1 : 0.2 }}
-                          >
-                            ＋
-                          </button>
+                        {/* Blocco testi interno all'arco, posizionato con flex layout pulito */}
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 5, marginTop: '20px' }}>
+                          <span style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                            Misurata {zone.tempActual}°C
+                          </span>
+                          <span style={{ fontSize: '0.7rem', color: '#06b6d4', fontWeight: '600', marginTop: '0.2rem' }}>
+                            Umidità: {zone.humidity}%
+                          </span>
+                          <span style={{ fontSize: '2.2rem', fontWeight: '800', fontFamily: 'var(--font-title)', marginTop: '0.2rem', color: zone.power ? 'white' : 'rgba(255,255,255,0.3)', lineHeight: 1 }}>
+                            {zone.power ? `${zone.tempTarget}°C` : 'OFF'}
+                          </span>
                         </div>
                       </div>
+
+                      {/* Pulsante PIÙ a destra */}
+                      <button 
+                        className="temp-btn" 
+                        onClick={() => handleTempChange(id, 0.5)}
+                        disabled={!zone.power}
+                        style={{ width: '42px', height: '42px', fontSize: '1.2rem', opacity: zone.power ? 1 : 0.15, flexShrink: 0, zIndex: 10, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+                      >
+                        ＋
+                      </button>
+
                     </div>
 
                     {/* Variazione Termica con mini-grafico cliccabile per ingrandimento */}
