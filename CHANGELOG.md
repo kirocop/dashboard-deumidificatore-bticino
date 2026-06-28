@@ -5,6 +5,12 @@ Il formato è basato su [Keep a Changelog](https://keepachangelog.com/it/1.0.0/)
 
 ---
 
+## [1.0.5] - 2026-06-28
+### Modificato
+- **Miglioramento Visibilità Clima:** Riallineato e sollevato l'arco del termostato verso l'alto (da `top: 0px` a `top: -10px`) e aumentato il contrasto e la dimensione dei font interni (Misurata e Umidità ingranditi, setpoint/OFF aumentato a `2.6rem`) per dare un look molto più definito e leggibile a distanza.
+
+---
+
 ## [1.0.4] - 2026-06-28
 ### Modificato
 - **Restyling Termostato (Stile Home + Control):** Ridisegnata completamente l'interfaccia termostato. Rimossa la sovrapposizione assoluta problematica tra scritte, pulsanti e semicerchio SVG. I pulsanti `＋` e `－` sono stati riposizionati lateralmente a sinistra e a destra dell'arco, e le informazioni testuali (temperatura misurata, livello di umidità e temperatura target) sono state inserite in modo pulito e spazioso all'interno della curvatura.

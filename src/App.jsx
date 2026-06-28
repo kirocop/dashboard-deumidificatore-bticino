@@ -194,14 +194,14 @@ function App() {
                         －
                       </button>
 
-                      {/* Display Arco centrale con scritte ben distanziate */}
-                      <div style={{ position: 'relative', width: '100%', maxWidth: '180px', height: '140px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <svg viewBox="0 0 200 120" style={{ width: '100%', height: 'auto', overflow: 'visible', position: 'absolute', top: 0, left: 0 }}>
+                      {/* Display Arco centrale con scritte ben distanziate ed evidenti */}
+                      <div style={{ position: 'relative', width: '100%', maxWidth: '200px', height: '140px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <svg viewBox="0 0 200 120" style={{ width: '100%', height: 'auto', overflow: 'visible', position: 'absolute', top: '-10px', left: 0 }}>
                           <path 
                             d="M 20 110 A 80 80 0 0 1 180 110" 
                             fill="none" 
                             stroke={zone.power ? 'rgba(6, 182, 212, 0.12)' : 'rgba(255,255,255,0.03)'} 
-                            strokeWidth="10" 
+                            strokeWidth="11" 
                             strokeLinecap="round" 
                           />
                           {zone.power && (
@@ -209,7 +209,7 @@ function App() {
                               d="M 20 110 A 80 80 0 0 1 180 110" 
                               fill="none" 
                               stroke="url(#arc-gradient)" 
-                              strokeWidth="10" 
+                              strokeWidth="11" 
                               strokeLinecap="round" 
                               strokeDasharray="251" 
                               strokeDashoffset={251 - (251 * ((zone.tempTarget - 16) / 16))} 
@@ -223,15 +223,15 @@ function App() {
                           </defs>
                         </svg>
 
-                        {/* Blocco testi interno all'arco, posizionato con flex layout pulito */}
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 5, marginTop: '20px' }}>
-                          <span style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        {/* Blocco testi interno all'arco, alzato e ingrandito per massima leggibilità */}
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 5, marginTop: '8px' }}>
+                          <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: '500' }}>
                             Misurata {zone.tempActual}°C
                           </span>
-                          <span style={{ fontSize: '0.7rem', color: '#06b6d4', fontWeight: '600', marginTop: '0.2rem' }}>
+                          <span style={{ fontSize: '0.82rem', color: '#06b6d4', fontWeight: '700', marginTop: '0.2rem' }}>
                             Umidità: {zone.humidity}%
                           </span>
-                          <span style={{ fontSize: '2.2rem', fontWeight: '800', fontFamily: 'var(--font-title)', marginTop: '0.2rem', color: zone.power ? 'white' : 'rgba(255,255,255,0.3)', lineHeight: 1 }}>
+                          <span style={{ fontSize: '2.6rem', fontWeight: '800', fontFamily: 'var(--font-title)', marginTop: '0.3rem', color: zone.power ? 'white' : 'rgba(255,255,255,0.3)', lineHeight: 1.1 }}>
                             {zone.power ? `${zone.tempTarget}°C` : 'OFF'}
                           </span>
                         </div>

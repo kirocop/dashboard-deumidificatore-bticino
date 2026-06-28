@@ -1,6 +1,6 @@
 {
   "name": "dashboard-deumidificatore-bticino",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Dashboard per domotica Bticino e Legrand Home + Control",
   "main": "main.js",
   "type": "module",
