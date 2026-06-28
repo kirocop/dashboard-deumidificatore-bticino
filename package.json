@@ -1,7 +1,7 @@
 {
-  "name": "casa-barbato",
+  "name": "dashboard-deumidificatore-bticino",
   "version": "1.0.0",
-  "description": "Dashboard per domotica Bticino",
+  "description": "Dashboard per domotica Bticino e Legrand Home + Control",
   "main": "main.js",
   "type": "module",
   "scripts": {
@@ -13,8 +13,8 @@
     "dist": "vite build && electron-builder"
   },
   "build": {
-    "appId": "com.casabarbato.dashboard",
-    "productName": "Casa Barbato",
+    "appId": "com.bticino.dehumidifier.dashboard",
+    "productName": "Dashboard Deumidificatore Bticino",
     "directories": {
       "output": "dist-mac"
     },
@@ -30,8 +30,7 @@
       "main.js",
       "server.js",
       "package.json",
-      "node_modules/**/*",
-      ".env"
+      "node_modules/**/*"
     ]
   },
   "dependencies": {
