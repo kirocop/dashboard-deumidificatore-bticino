@@ -143,47 +143,65 @@ function sendOpenWebNetCommand(command) {
     const client = new net.Socket();
     let responseData = '';
     let authenticated = false;
-    let handshakeInitiated = false;
+    let handshakeState = 'WAIT_INITIAL_ACK'; // 'WAIT_INITIAL_ACK' | 'WAIT_CHALLENGE' | 'WAIT_AUTH_ACK' | 'WAIT_COMMAND_RESPONSE'
+    
     client.setTimeout(4000);
     client.connect(GATEWAY_PORT, GATEWAY_IP, () => {
       client.write('*99*0##');
     });
+    
     client.on('data', (data) => {
       const msg = data.toString().trim();
       
-      // Se il gateway risponde direttamente con ACK *#*1##, siamo connessi senza bisogno di auth
-      if (msg === '*#*1##' && !handshakeInitiated) {
-        authenticated = true;
-        handshakeInitiated = true;
-        client.write(command);
+      if (handshakeState === 'WAIT_INITIAL_ACK') {
+        if (msg === '*#*1##') {
+          handshakeState = 'WAIT_CHALLENGE';
+        } else {
+          client.destroy();
+          reject(new Error('Handshake fallito: ACK iniziale non ricevuto'));
+        }
         return;
       }
       
-      if (msg === '*#*1##' && authenticated) {
-        client.write(command);
+      if (handshakeState === 'WAIT_CHALLENGE') {
+        const challengeMatch = msg.match(/\*#(\d+)##/);
+        if (challengeMatch) {
+          const nonce = challengeMatch[1];
+          const calculatedPass = ownCalcPass(OWN_PASSWORD, nonce);
+          handshakeState = 'WAIT_AUTH_ACK';
+          client.write(`*#${calculatedPass}##`);
+        } else {
+          client.destroy();
+          reject(new Error('Handshake fallito: Challenge non ricevuta'));
+        }
         return;
       }
       
-      const challengeMatch = msg.match(/\*#(\d+)##/);
-      if (challengeMatch && !authenticated) {
-        const nonce = challengeMatch[1];
-        const calculatedPass = ownCalcPass(OWN_PASSWORD, nonce);
-        authenticated = true;
-        handshakeInitiated = true;
-        client.write(`*#${calculatedPass}##`);
+      if (handshakeState === 'WAIT_AUTH_ACK') {
+        if (msg === '*#*1##') {
+          handshakeState = 'WAIT_COMMAND_RESPONSE';
+          client.write(command);
+        } else {
+          client.destroy();
+          reject(new Error('Autenticazione fallita'));
+        }
         return;
       }
       
-      responseData += msg;
-      if (msg.endsWith('*#*1##') || msg.endsWith('*#*0##')) {
-        client.destroy();
-        resolve(responseData);
+      if (handshakeState === 'WAIT_COMMAND_RESPONSE') {
+        responseData += msg;
+        if (msg.endsWith('*#*1##') || msg.endsWith('*#*0##')) {
+          client.destroy();
+          resolve(responseData);
+        }
       }
     });
+    
     client.on('error', (err) => {
       client.destroy();
       reject(err);
     });
+    
     client.on('timeout', () => {
       client.destroy();
       reject(new Error('Gateway timeout'));

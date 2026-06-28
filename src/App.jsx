@@ -7,7 +7,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('domotica'); // 'domotica' | 'energia'
   const [expandedZoneId, setExpandedZoneId] = useState(null); // ID della zona ingrandita
   
-  const CURRENT_VERSION = '1.0.7';
+  const CURRENT_VERSION = '1.0.8';
   const [updateAvailable, setUpdateAvailable] = useState(false);
   const [latestVersion, setLatestVersion] = useState('');
 

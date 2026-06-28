@@ -5,6 +5,12 @@ Il formato è basato su [Keep a Changelog](https://keepachangelog.com/it/1.0.0/)
 
 ---
 
+## [1.0.8] - 2026-06-28
+### Corretto
+- **Fix Macchina a Stati Handshake Bticino:** Riprogettato il modulo di handshake in modo asincrono sequenziale (Stati: `WAIT_INITIAL_ACK` -> `WAIT_CHALLENGE` -> `WAIT_AUTH_ACK` -> `WAIT_COMMAND_RESPONSE`) per elaborare correttamente l'autenticazione a due fattori con password OpenWebNet standard 12345 del MyHOMEServer1, superando le disconnessioni TCP immediate.
+
+---
+
 ## [1.0.7] - 2026-06-28
 ### Corretto
 - **Supporto Gateway Senza Password:** Aggiornato l'handshake OpenWebNet del server locale per consentire la comunicazione immediata se il gateway risponde direttamente con `*#*1##` senza richiedere la password crittografata (comportamento tipico del MyHOMEServer1 con autenticazione locale disabilitata o IP autorizzati).
