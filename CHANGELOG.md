@@ -5,6 +5,12 @@ Il formato è basato su [Keep a Changelog](https://keepachangelog.com/it/1.0.0/)
 
 ---
 
+## [1.0.6] - 2026-06-28
+### Modificato
+- **Riprogettazione Termostato (Display Circolare Nest/Netatmo style):** Sostituito il vecchio semicerchio SVG con un display circolare digitale completo, pulito ed elegante. Allineati al centro del cerchio la temperatura misurata (in alto), la temperatura target/stato OFF (grande e in evidenza al centro), e l'umidità (con icona goccia d'acqua in basso). I pulsanti `＋` e `－` sono stati integrati all'interno di una capsula scura galleggiante sul bordo inferiore del display, eliminando le distorsioni grafiche e migliorando l'usabilità.
+
+---
+
 ## [1.0.5] - 2026-06-28
 ### Modificato
 - **Miglioramento Visibilità Clima:** Riallineato e sollevato l'arco del termostato verso l'alto (da `top: 0px` a `top: -10px`) e aumentato il contrasto e la dimensione dei font interni (Misurata e Umidità ingranditi, setpoint/OFF aumentato a `2.6rem`) per dare un look molto più definito e leggibile a distanza.

@@ -6,7 +6,7 @@
 APP_NAME="Dashboard Deumidificatore Bticino"
 APP_DIR="/Applications/${APP_NAME}.app"
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
-DMG_PATH="${REPO_DIR}/dist-mac/${APP_NAME}-1.0.5-arm64.dmg"
+DMG_PATH="${REPO_DIR}/dist-mac/${APP_NAME}-1.0.6-arm64.dmg"
 
 echo "🍏 Sblocco e Installazione rapida di: ${APP_NAME}"
 echo "--------------------------------------------------------"

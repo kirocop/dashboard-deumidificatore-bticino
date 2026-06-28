@@ -235,72 +235,116 @@ function App() {
                       </div>
                     </div>
 
-                    {/* Regolazione termostato ad arco e pulsanti laterali ben spaziati */}
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', margin: '1rem 0 1.5rem 0', minHeight: '190px', position: 'relative' }}>
+                    {/* Interfaccia Termostato Premium Nest/Netatmo-style (Capsula circolare moderna e pulita) */}
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: '2rem 0', position: 'relative' }}>
                       
-                      {/* Pulsante MENO a sinistra */}
-                      <button 
-                        className="temp-btn" 
-                        onClick={() => handleTempChange(id, -0.5)}
-                        disabled={!zone.power}
-                        style={{ width: '42px', height: '42px', fontSize: '1.2rem', opacity: zone.power ? 1 : 0.15, flexShrink: 0, zIndex: 10, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
-                      >
-                        －
-                      </button>
-
-                      {/* Display Arco centrale con scritte ben distanziate ed evidenti */}
-                      <div style={{ position: 'relative', width: '100%', maxWidth: '200px', height: '140px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <svg viewBox="0 0 200 120" style={{ width: '100%', height: 'auto', overflow: 'visible', position: 'absolute', top: '-10px', left: 0 }}>
-                          <path 
-                            d="M 20 110 A 80 80 0 0 1 180 110" 
-                            fill="none" 
-                            stroke={zone.power ? 'rgba(6, 182, 212, 0.12)' : 'rgba(255,255,255,0.03)'} 
-                            strokeWidth="11" 
-                            strokeLinecap="round" 
-                          />
-                          {zone.power && (
-                            <path 
-                              d="M 20 110 A 80 80 0 0 1 180 110" 
-                              fill="none" 
-                              stroke="url(#arc-gradient)" 
-                              strokeWidth="11" 
-                              strokeLinecap="round" 
-                              strokeDasharray="251" 
-                              strokeDashoffset={251 - (251 * ((zone.tempTarget - 16) / 16))} 
-                            />
-                          )}
-                          <defs>
-                            <linearGradient id="arc-gradient" x1="0" y1="0" x2="1" y2="0">
-                              <stop offset="0%" stopColor="#06b6d4" />
-                              <stop offset="100%" stopColor="#3b82f6" />
-                            </linearGradient>
-                          </defs>
-                        </svg>
-
-                        {/* Blocco testi interno all'arco, alzato e ingrandito per massima leggibilità */}
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 5, marginTop: '8px' }}>
-                          <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: '500' }}>
-                            Misurata {zone.tempActual}°C
-                          </span>
-                          <span style={{ fontSize: '0.82rem', color: '#06b6d4', fontWeight: '700', marginTop: '0.2rem' }}>
-                            Umidità: {zone.humidity}%
-                          </span>
-                          <span style={{ fontSize: '2.6rem', fontWeight: '800', fontFamily: 'var(--font-title)', marginTop: '0.3rem', color: zone.power ? 'white' : 'rgba(255,255,255,0.3)', lineHeight: 1.1 }}>
-                            {zone.power ? `${zone.tempTarget}°C` : 'OFF'}
-                          </span>
+                      {/* Display Circolare Centrale */}
+                      <div style={{
+                        width: '180px',
+                        height: '180px',
+                        borderRadius: '50%',
+                        background: zone.power 
+                          ? 'radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, rgba(15, 23, 42, 0.6) 70%)' 
+                          : 'rgba(0, 0, 0, 0.25)',
+                        border: zone.power ? '2px solid rgba(6, 182, 212, 0.4)' : '2px solid rgba(255,255,255,0.05)',
+                        boxShadow: zone.power ? '0 0 25px rgba(6, 182, 212, 0.15)' : 'none',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        position: 'relative',
+                        transition: 'all 0.3s ease'
+                      }}>
+                        
+                        {/* Indicatore Temperatura Attuale */}
+                        <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                          Misurata {zone.tempActual}°C
                         </div>
+
+                        {/* Valore di Target o OFF */}
+                        <div style={{ 
+                          fontSize: '3.2rem', 
+                          fontWeight: '800', 
+                          fontFamily: 'var(--font-title)', 
+                          color: zone.power ? 'white' : 'rgba(255,255,255,0.2)',
+                          margin: '0.2rem 0',
+                          lineHeight: '1',
+                          textShadow: zone.power ? '0 2px 10px rgba(255,255,255,0.1)' : 'none'
+                        }}>
+                          {zone.power ? `${zone.tempTarget}°` : 'OFF'}
+                        </div>
+
+                        {/* Umidità Relativa */}
+                        <div style={{ 
+                          fontSize: '0.8rem', 
+                          color: zone.power ? '#06b6d4' : 'var(--color-text-muted)', 
+                          fontWeight: '700',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.2rem'
+                        }}>
+                          💧 {zone.humidity}%
+                        </div>
+
+                        {/* Controlli Temperatura Interni al Display (In basso) */}
+                        {zone.power && (
+                          <div style={{ 
+                            display: 'flex', 
+                            gap: '1.2rem', 
+                            position: 'absolute', 
+                            bottom: '-15px', 
+                            background: '#0f172a',
+                            padding: '0.3rem 0.8rem',
+                            borderRadius: '30px',
+                            border: '1px solid rgba(255, 255, 255, 0.08)',
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.5)'
+                          }}>
+                            <button 
+                              onClick={() => handleTempChange(id, -0.5)}
+                              style={{ 
+                                border: 'none', 
+                                background: 'transparent', 
+                                color: '#94a3b8', 
+                                fontSize: '1.2rem', 
+                                fontWeight: '700', 
+                                cursor: 'pointer',
+                                width: '24px',
+                                height: '24px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                transition: 'color 0.2s'
+                              }}
+                              onMouseOver={(e) => e.currentTarget.style.color = '#3b82f6'}
+                              onMouseOut={(e) => e.currentTarget.style.color = '#94a3b8'}
+                            >
+                              －
+                            </button>
+                            <span style={{ color: 'rgba(255,255,255,0.15)', fontSize: '0.9rem' }}>|</span>
+                            <button 
+                              onClick={() => handleTempChange(id, 0.5)}
+                              style={{ 
+                                border: 'none', 
+                                background: 'transparent', 
+                                color: '#94a3b8', 
+                                fontSize: '1.2rem', 
+                                fontWeight: '700', 
+                                cursor: 'pointer',
+                                width: '24px',
+                                height: '24px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                transition: 'color 0.2s'
+                              }}
+                              onMouseOver={(e) => e.currentTarget.style.color = '#3b82f6'}
+                              onMouseOut={(e) => e.currentTarget.style.color = '#94a3b8'}
+                            >
+                              ＋
+                            </button>
+                          </div>
+                        )}
                       </div>
-
-                      {/* Pulsante PIÙ a destra */}
-                      <button 
-                        className="temp-btn" 
-                        onClick={() => handleTempChange(id, 0.5)}
-                        disabled={!zone.power}
-                        style={{ width: '42px', height: '42px', fontSize: '1.2rem', opacity: zone.power ? 1 : 0.15, flexShrink: 0, zIndex: 10, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
-                      >
-                        ＋
-                      </button>
-
                     </div>
 
                     {/* Variazione Termica con mini-grafico cliccabile per ingrandimento */}
